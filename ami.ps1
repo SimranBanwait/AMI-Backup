@@ -1,25 +1,24 @@
-# Define AWS region
-$region = "us-east-1"
+# Create a servers.txt file, add the name of severs as below
+# server1
+# server2
+# server3
 
-# Read server names from servers.txt
-$serverNames = Get-Content -Path "servers.txt"
+$servers = Get-Content -Path "servers.txt"
 
-foreach ($serverName in $serverNames) {
-    # Get the instance ID for the server name
-    $instance = Get-EC2Instance -Region $region | Where-Object { $_.Tags.Key -eq "Name" -and $_.Tags.Value -eq $serverName -and $_.State.Name -eq "running" }
+foreach ($server in $servers) {
+    # Describe the instance to get the instance ID
+    $instance = aws ec2 describe-instances --filters "Name=tag:Name,Values=$server" --query "Reservations[*].Instances[*].InstanceId" --output text
 
     if ($instance) {
-        # Create AMI backup
-        $ami = New-EC2Image -InstanceId $instance.InstanceId -Name "Backup-$($instance.InstanceId)-$(Get-Date -Format 'yyyyMMddHHmmss')" -NoReboot
+        # Create an AMI backup
+        $ami_id = aws ec2 create-image --instance-id $instance --name "$server-backup-$(Get-Date -Format 'yyyy-MM-dd-HH-mm')" --no-reboot --output text
 
-        # Output the AMI ID
-        Write-Output "Created AMI: $($ami.ImageId) for Instance: $($instance.InstanceId)"
+        if ($ami_id) {
+            Write-Output "AMI backup fo server: $server started successfully with AMI ID: $ami_id"
+        } else {
+            Write-Output "Failed to create AMI backup for $server"
+        }
     } else {
-        Write-Output "No running instance found for server: $serverName"
+        Write-Output "Instance for server $server not found"
     }
 }
-
-
-# Post Fixer 2
-# Windows-Machine2
-# Post Fixer 1
