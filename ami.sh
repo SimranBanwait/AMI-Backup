@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#Usage : Create a servers.txt file and enter their name one by one in the file.
+#server1
+#server2
+#server2
+
 REGION="us-east-1"
 
 # Read the list of server names from servers.txt
