@@ -6,7 +6,7 @@ REGION="us-east-1"
 declare -A SERVER_GROUPS
 SERVER_GROUPS[dev]="dev-insight-1 dev-insight-2 cron-dev-ofsight-3"
 SERVER_GROUPS[stg]="stg-ofs-insight cronab-stg"
-SERVER_GROUPS[qa]="Post Fixer 2"
+SERVER_GROUPS[qa]="Post-Fixer-2"
 SERVER_GROUPS[beta]="Win-machine"
 
 # Function to perform AMI backup for a given server
