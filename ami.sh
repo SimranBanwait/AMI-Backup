@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#Usage: run the script with either one of these flags
+#./script.sh -dev, -qa, -stg, -beta
+
 REGION="us-east-1"
 
 # Server name definitions

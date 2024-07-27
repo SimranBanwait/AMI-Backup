@@ -1,3 +1,6 @@
+#Usage: run the script with either one of these flags
+#./script.ps1 -dev, -qa, -stg, -beta
+
 $REGION = "us-east-1"
 
 # Server name definitions
