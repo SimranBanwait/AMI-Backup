@@ -1,26 +1,36 @@
 #Usage: run the script with either one of these flags
 #./script.ps1 -dev, -qa, -stg, -beta
+#Limitation: server name should not have space in it. Example : "stg ofs insight"
+#instead the server name should be "stg-ofs-insight"
 
 $REGION = "us-east-1"
 
 # Server name definitions
 $SERVER_GROUPS = @{
-    dev  = @("dev-insight-1", "dev-insight-2", "cron-dev-ofsight-3")
-    stg  = @("stg-ofs-insight", "cronab-stg")
-    qa   = @("Post-Fixer-2")
-    beta = @("Win-machine")
+    dev  = @(
+        "dev-insight-1",
+        "dev-insight-2",
+        "cron-dev-ofsight-3"
+    )
+    stg  = @(
+        "stg-ofs-insight",
+        "cronab-stg"
+    )
+    qa   = @(
+        "Post-Fixer-2"
+    )
+    beta = @(
+        "Win-machine"
+    )
 }
 
 # Function to perform AMI backup for a given server
 function Perform-Backup {
-    param (
-        [string]$server
-    )
+    param ([string]$server)
     
     Write-Output ""
     Write-Output "AMI backup has started for server: ${server} in region: ${REGION}"
     
-    # Get the instance ID of the server
     $instance_id = aws ec2 describe-instances --region $REGION --filters "Name=tag:Name,Values=$server" --query "Reservations[*].Instances[*].InstanceId" --output text
     
     if ([string]::IsNullOrEmpty($instance_id)) {
@@ -28,7 +38,6 @@ function Perform-Backup {
         return
     }
     
-    # Create an AMI from the instance
     $ami_id = aws ec2 create-image --region $REGION --instance-id $instance_id --name "${server}-backup-$(Get-Date -Format 'yyyy-MM-dd')" --query "ImageId" --no-reboot --output text
     
     if ([string]::IsNullOrEmpty($ami_id)) {
@@ -39,12 +48,11 @@ function Perform-Backup {
 }
 
 # Check for flags
-$environment = $null
-switch ($args[0]) {
-    "-dev"  { $environment = "dev" }
-    "-stg"  { $environment = "stg" }
-    "-qa"   { $environment = "qa" }
-    "-beta" { $environment = "beta" }
+$environment = switch ($args[0]) {
+    "-dev"  { "dev" }
+    "-stg"  { "stg" }
+    "-qa"   { "qa" }
+    "-beta" { "beta" }
     default {
         Write-Output "Please use either -dev, -stg, -qa, or -beta flag to specify the environment."
         exit 1

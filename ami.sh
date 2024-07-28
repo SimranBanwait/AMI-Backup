@@ -2,15 +2,27 @@
 
 #Usage: run the script with either one of these flags
 #./script.sh -dev, -qa, -stg, -beta
+#Limitation: server name should not have space in it. Example : "stg ofs insight"
+#instead the server name should be "stg-ofs-insight"
 
 REGION="us-east-1"
 
 # Server name definitions
 declare -A SERVER_GROUPS
-SERVER_GROUPS[dev]="dev-insight-1 dev-insight-2 cron-dev-ofsight-3"
-SERVER_GROUPS[stg]="stg-ofs-insight cronab-stg"
-SERVER_GROUPS[qa]="Post-Fixer-2"
-SERVER_GROUPS[beta]="Win-machine"
+SERVER_GROUPS[dev]="
+dev-insight-1
+dev-insight-2
+cron-dev-ofsight-3"
+
+SERVER_GROUPS[stg]="
+stg-ofs-insight
+cronab-stg"
+
+SERVER_GROUPS[qa]="
+Post-Fixer-2"
+
+SERVER_GROUPS[beta]="
+Win-machine"
 
 # Function to perform AMI backup for a given server
 perform_backup() {
@@ -51,7 +63,7 @@ else
 fi
 
 # Get the servers for the specified environment
-IFS=' ' read -ra servers <<< "${SERVER_GROUPS[$environment]}"
+IFS=$'\n' read -d '' -ra servers <<< "${SERVER_GROUPS[$environment]}"
 
 # Check if the environment exists
 if [ ${#servers[@]} -eq 0 ]; then
