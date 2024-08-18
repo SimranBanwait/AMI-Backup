@@ -10,19 +10,24 @@ REGION="us-east-1"
 # Server name definitions
 declare -A SERVER_GROUPS
 SERVER_GROUPS[dev]="
-dev-insight-1
-dev-insight-2
-cron-dev-ofsight-3"
+dev-server-1
+dev-server-2
+dev-server-3"
 
 SERVER_GROUPS[stg]="
-stg-ofs-insight
-cronab-stg"
+stg-server-1
+stg-server-2
+stg-server-3"
 
 SERVER_GROUPS[qa]="
-Post-Fixer-2"
+qa-server-1
+qa-server-2
+qa-server-3"
 
 SERVER_GROUPS[beta]="
-Win-machine"
+beta-server-1
+beta-server-2
+beta-server-3"
 
 # Function to perform AMI backup for a given server
 perform_backup() {
