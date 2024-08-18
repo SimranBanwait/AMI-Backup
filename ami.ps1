@@ -1,26 +1,31 @@
 #Usage: run the script with either one of these flags
 #./script.ps1 -dev, -qa, -stg, -beta
 #Limitation: server name should not have space in it. Example : "stg ofs insight"
-#instead the server name should be "stg-ofs-insight"
+
 
 $REGION = "us-east-1"
 
 # Server name definitions
 $SERVER_GROUPS = @{
     dev  = @(
-        "dev-insight-1",
-        "dev-insight-2",
-        "cron-dev-ofsight-3"
+        "dev-server-1",
+        "dev-server-2",
+        "dev-server-3"
     )
     stg  = @(
-        "stg-ofs-insight",
-        "cronab-stg"
+        "stg-server-1",
+        "stg-server-2",
+        "stg-server-3"
     )
     qa   = @(
-        "Post-Fixer-2"
+        "qa-server-1",
+        "qa-server-2",
+        "qa-server-3"
     )
     beta = @(
-        "Win-machine"
+        "beta-server-1",
+        "beta-server-2",
+        "beta-server-3"
     )
 }
 
